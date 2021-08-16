@@ -1,6 +1,6 @@
 name: tree_structures
 description: tree_structures is a Dart implentation of (currently only) a red-black self-balancing binary search tree with a possibility to output to Graphviz for previewing.
-version: 0.0.2
+version: 0.0.3
 repository: https://github.com/iuthere/tree_structures
 
 environment:
