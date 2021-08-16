@@ -117,4 +117,4 @@ digraph {
 
 Graphviz to svg example output of the above tree (`dot -Tsvg <file.dot> > exmple_output.svg`):
 
-![svg](example_output.svg)
+![svg](https://raw.githubusercontent.com/iuthere/tree_structures/master/example_output.svg)
