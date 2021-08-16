@@ -1,3 +1,7 @@
+## 0.0.4
+
+* README link back to pub.dev.
+
 ## 0.0.3
 
 * README links fix.
