@@ -19,27 +19,6 @@ extension on Stopwatch {
 }
 
 void main() {
-  test("Example", () {
-    var tree = RBTree<int, dynamic>();
-    tree.insert(100, "data associated with 100");
-    tree.insert(150, "data associated with 150");
-    tree.remove(100);
-    tree.insert(200, "data associated with 200");
-    tree.insert(20, "data associated with 20");
-    tree.insert(25, "data associated with 25");
-    tree.insert(18, "data associated with 18");
-    tree.insert(120, "data associated with 120");
-    tree.insert(180, "data associated with 180");
-    print(tree);
-    print("\n");
-    tree.forEach((node) {
-      print("${node.key}:${node.value}");
-      return true; // continue
-    });
-    print("\n");
-    print(tree.output(OutputStyle.Graphviz));
-    // outputToDotAndSvg(tree, "output");
-  });
   test("RBTree Expectation", () {
     var tree = RBTree<int, dynamic>();
     var _e = (String v, int size) {
@@ -109,6 +88,10 @@ void main() {
     expect(
       sb.toString(),
       "25,45,46,48,50,60,90,150,180,190",
+    );
+    expect(
+      tree.output(OutputStyle.KeyList).toString(),
+      "50,45,25,48,46,90,60,180,150,190",
     );
 
     //outputToDotAndSvg(tree, "test");

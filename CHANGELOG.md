@@ -1,3 +1,7 @@
+## 0.0.5
+
+* Provide an example, add more API docs.
+
 ## 0.0.4
 
 * README link back to pub.dev.

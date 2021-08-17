@@ -6,23 +6,36 @@ class RBNode<K extends Comparable, V> {
   RBNode<K, V>? _right;
   RBNode<K, V>? _parent;
 
+  /// [left] node.
   RBNode<K, V>? get left => _left;
+
+  /// [right] node.
   RBNode<K, V>? get right => _right;
+
+  /// [parent] node, null for the root node.
   RBNode<K, V>? get parent => _parent;
 
   K _key;
+
+  /// [key] is a read-only node's field by which the tree is sorted into a binary tree structure.
   K get key => _key;
 
+  /// [value] is a modifiable field associated with every node.
   V value;
 
   bool _red = true;
+
+  /// [red] flag.
   bool get red => _red;
 
   RBNode(K key, V value)
       : _key = key,
         value = value;
 
+  /// [isRoot] equals to parent == null.
   bool get isRoot => _parent == null;
+
+  /// [isLeaf] returns true if the node has no children.
   bool get isLeaf => _left == null && _right == null;
 }
 
@@ -51,25 +64,33 @@ class InsertNodeResult<K extends Comparable, V> {
 ///
 class RBTree<K extends Comparable, V> {
   RBNode<K, V>? _root;
+
+  // [root] returns the root node.
   RBNode<K, V>? get root => _root;
 
   int _length = 0;
+
+  // [length] returns the amount of nodes.
   int get length => _length;
 
   RBNode<K, V>? _first;
+
+  // [first] returns cached node with a minimum key.
   RBNode<K, V>? get first => _first;
 
   RBNode<K, V>? _last;
+
+  // [first] returns cached node with a maximum key.
   RBNode<K, V>? get last => _last;
 
-  /// [insert] returns a [InsertNodeResult], consisting of the just [inserted] node and a possibly [detached] from the tree node
+  /// insert returns a [InsertNodeResult], consisting of the just [inserted] node and a possibly [detached] from the tree node
   /// if replacement had to happened.
   InsertNodeResult<K, V> insert(K key, V value) {
     var node = RBNode(key, value);
     return InsertNodeResult(node, insertNode(node));
   }
 
-  /// [find] for the [key] in the tree. Provide [from] to search inside a subtree.
+  /// find for the [key] in the tree. Provide [from] to search inside a subtree.
   RBNode<K, V>? find(K key, {RBNode<K, V>? from}) {
     if (from == null) from = _root;
     RBNode<K, V>? node = from;
@@ -82,18 +103,19 @@ class RBTree<K extends Comparable, V> {
     return node;
   }
 
-  /// Syntax sugar for [find].
+  /// [] is a syntax sugar for [find].
   RBNode<K, V>? operator [](K key) {
     return find(key);
   }
 
-  /// operator will replace a [RBNode] if an existing [key] is used.
+  /// []= adds a node or replaces [RBNode] if an existing [key] is used.
   void operator []=(K key, V value) {
     insert(key, value);
   }
 
-  /// starting with [from] (which can be tree's root), which node is the minimum by key in this subtree.
-  /// This may result in [from] itself, if it has no left node.
+  /// min returns the node with a minimum key starting with the [from] subtree.
+  ///
+  /// This may result in [from] itself, if it has no left branch node.
   RBNode<K, V> min(RBNode<K, V> from) {
     while (from._left != null) {
       from = from._left!;
@@ -101,8 +123,9 @@ class RBTree<K extends Comparable, V> {
     return from;
   }
 
-  /// starting with [from] (which can be tree's root), which node is the maximum by key in this subtree.
-  /// This may result in [from] itself, if it has no right node.
+  /// max returns the node with a maximum key starting with the [from] subtree.
+  ///
+  /// This may result in [from] itself, if it has no right branch node.
   RBNode<K, V> max(RBNode<K, V> from) {
     while (from._right != null) {
       from = from._right!;
@@ -110,7 +133,7 @@ class RBTree<K extends Comparable, V> {
     return from;
   }
 
-  /// returns the node which key is the biggest of all the smaller than [node.key].
+  /// predecessor returns the node which key is the biggest of all the smaller than [node.key].
   RBNode<K, V>? predecessor(RBNode<K, V> node) {
     if (node._left != null) return max(node._left!);
     var p = node._parent;
@@ -121,7 +144,7 @@ class RBTree<K extends Comparable, V> {
     return p;
   }
 
-  /// returns the node which key is the smallest of all the greater than [node.key].
+  /// successor returns the node which key is the smallest of all the greater than [node.key].
   RBNode<K, V>? successor(RBNode<K, V> node) {
     if (node._right != null) return min(node._right!);
     var p = node._parent;
@@ -172,12 +195,12 @@ class RBTree<K extends Comparable, V> {
     q._right = node;
   }
 
-  /// [insertNode] will move the [node] from any current trees it may be at, thus destroying the other tree's integrity.
+  /// insertNode will move the [node] from any current trees it may be at, thus destroying the other tree's integrity.
   ///
-  /// [insertNode] implants the [node] into the tree at the right location and performs balancing.
+  /// insertNode implants the [node] into the tree at the right location and performs balancing.
   ///
-  /// [insertNode] returns a possibly replaced node, which will be detached from the tree by nullifying its [RBNode.parent], [RBNode.left] and [RBNode.right].
-  /// [insertMode] of a node that is already in the tree is a no-op and returns `null`.
+  /// insertNode returns a possibly replaced node, which will be detached from the tree by nullifying its [RBNode.parent], [RBNode.left] and [RBNode.right].
+  /// insertMode of a node that is already in the tree is a no-op and returns `null`.
   RBNode<K, V>? insertNode(RBNode<K, V> node) {
     RBNode<K, V>? found = root;
     RBNode<K, V>? parent;
@@ -288,6 +311,7 @@ class RBTree<K extends Comparable, V> {
     return null;
   }
 
+  /// removes removes a node with the [key]. It's a no-op if the node doesn't exist.
   remove(K key) {
     var node = find(key);
     if (node == null) return;
@@ -409,7 +433,7 @@ class RBTree<K extends Comparable, V> {
     node?._red = false;
   }
 
-  /// toString() will act as `output(OutputStyle.KeyDesc).toString()`.
+  /// toString will act as `output(OutputStyle.KeyDesc).toString()`.
   @override
   String toString() {
     return output(OutputStyle.KeyDesc).toString();
@@ -533,6 +557,7 @@ class RBTree<K extends Comparable, V> {
     });
   }
 
+  /// randomNode returns a random node based on the provided seed.
   RBNode<K, V>? randomNode(Random rnd) {
     if (_root == null) return null;
     RBNode<K, V>? toDelete;
@@ -550,6 +575,7 @@ class RBTree<K extends Comparable, V> {
   }
 }
 
+/// OutputStyle is a enum for possible output styles.
 enum OutputStyle {
   /// Outputs as something like `(50.b(45<r(25<b)(48>b(46<r)))(150>r(60<b)(180>b(190>r))))`.
   KeyDesc,
